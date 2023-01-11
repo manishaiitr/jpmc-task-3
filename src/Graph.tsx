@@ -23,10 +23,13 @@ class Graph extends Component<IProps, {}> {
     const elem = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
 
     const schema = {
-      stock: 'string',
-      top_ask_price: 'float',
-      top_bid_price: 'float',
+      price_abc: 'float',
+      price_def: 'float',
+      ratio: 'float',
       timestamp: 'date',
+      top_ask_price: 'float',
+      top_bid_price: 'float',    
+      trigger_alert: 'float', 
     };
 
     if (window.perspective && window.perspective.worker()) {
@@ -44,15 +47,18 @@ class Graph extends Component<IProps, {}> {
         top_ask_price: 'avg',
         top_bid_price: 'avg',
         timestamp: 'distinct count',
+        upper_bound: 'avg',
+        lower_bound: 'avg',
+        trigger_alert: 'avg',
       }));
     }
   }
 
   componentDidUpdate() {
     if (this.table) {
-      this.table.update(
+      this.table.update([
         DataManipulator.generateRow(this.props.data),
-      );
+      ] as unknown as TableData);
     }
   }
 }
